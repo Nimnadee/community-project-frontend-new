@@ -1,10 +1,3 @@
-
-
-
 export default function StudentPage() {
-  return (
-    <div>
-        Student Home Page
-    </div>
-  );
+  return <div>Student Home Page</div>;
 }

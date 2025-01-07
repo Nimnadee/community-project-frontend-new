@@ -1,4 +1,4 @@
 interface Column {
-    key: string;
-    label: string;
+  key: string;
+  label: string;
 }

@@ -26,15 +26,16 @@ export default function ProjectPage() {
     },
   ];
 
-  const [rows, setRows]: [Project[], React.Dispatch<(prevRows: Project[]) => Project[]>]= useState([]);
+  const [rows, setRows]: [
+    Project[],
+    React.Dispatch<(prevRows: Project[]) => Project[]>,
+  ] = useState([]);
 
   useEffect(() => {
-    getAllProject().then(
-        res => {
-            console.log("fetch response: ", res);
-            setRows((prevRows: Project[]) => res);
-        }
-    )
+    getAllProject().then((res) => {
+      console.log("fetch response: ", res);
+      setRows((prevRows: Project[]) => res);
+    });
   }, []);
 
   useEffect(() => {
@@ -54,11 +55,7 @@ export default function ProjectPage() {
   return (
     <>
       <ProjectAddPopup onSave={handleSave} />
-      <ProjectTable
-        columns={columns}
-        rows={rows}
-        onDelete={handleDelete}
-      />
+      <ProjectTable columns={columns} rows={rows} onDelete={handleDelete} />
     </>
   );
 }

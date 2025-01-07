@@ -16,7 +16,7 @@ export async function getAllProject(): Promise<Project[]> {
 
 export async function getOneProject(id: string): Promise<Project> {
   const url: string = "http://localhost:3000/projects/" + id;
-  const response: Response = await fetch(url,{ cache: "no-store" });
+  const response: Response = await fetch(url, { cache: "no-store" });
   const project: Project = await response.json();
 
   return project;
