@@ -170,6 +170,16 @@ const createPreviewComponent = (mini: boolean) => {
   return PreviewComponent;
 };
 
+function CustomAppTitle() {
+  return (
+      <Box className="css-yzjoij" display="flex" alignItems="center">
+        {/*<CustomIcon width="40" height="40" />*/}
+        <Typography variant="h6" className="css-14tatqh-MuiTypography-root" sx={{ fontWeight: 'bold' }}>
+          Frumos
+        </Typography>
+      </Box>
+  );
+}
 function SidebarFooterAccount({ mini }: SidebarFooterProps) {
   if (mini) return null;
   const PreviewComponent = React.useMemo(() => createPreviewComponent(mini), [mini]);
@@ -260,7 +270,7 @@ export default function HomePage(props: DemoProps) {
       >
         <DashboardLayout
             defaultSidebarCollapsed
-            slots={{ sidebarFooter: SidebarFooterAccount }}
+            slots={{ sidebarFooter: SidebarFooterAccount ,appTitle: CustomAppTitle}}
         >
           <DemoPageContent pathname={router.pathname} />
         </DashboardLayout>
