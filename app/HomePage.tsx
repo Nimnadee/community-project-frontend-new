@@ -10,14 +10,21 @@ import {
   AppProvider,
   type Router,
   type Navigation,
+  type Session,
 } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-// import { ReactComponent as CustomIcon } from './path/to/your/custom-icon.svg'; // Replace with your custom icon path
+import { useDemoRouter } from '@toolpad/core/internal';
+
 const NAVIGATION: Navigation = [
   {
     segment: 'dashboard',
     title: 'Dashboard',
     icon: <DashboardIcon />,
+  },
+  {
+    segment: 'products',
+    title: 'Products',
+    icon: <ShoppingCartIcon />,
   },
   {
     segment: 'orders',
@@ -81,24 +88,44 @@ function CustomAppTitle() {
       </Box>
   );
 }
+
 export default function DashboardLayoutSidebarCollapsed(props: DemoProps) {
   const { window } = props;
 
-  const [pathname, setPathname] = React.useState('/dashboard');
+  const [session, setSession] = React.useState<Session | null>({
+    user: {
+      name: 'Bharat Kashyap',
+      email: 'bharatkashyap@outlook.com',
+      image: 'https://avatars.githubusercontent.com/u/19550456',
+    },
+  });
 
-  const router = React.useMemo<Router>(() => {
+  const authentication = React.useMemo(() => {
     return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path) => setPathname(String(path)),
+      signIn: () => {
+        setSession({
+          user: {
+            name: 'Bharat Kashyap',
+            email: 'bharatkashyap@outlook.com',
+            image: 'https://avatars.githubusercontent.com/u/19550456',
+          },
+        });
+      },
+      signOut: () => {
+        setSession(null);
+      },
     };
-  }, [pathname]);
+  }, []);
+
+  const router = useDemoRouter('/dashboard');
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window !== undefined ? window() : undefined;
 
   return (
       <AppProvider
+          session={session}
+          authentication={authentication}
           navigation={NAVIGATION}
           router={router}
           theme={demoTheme}
@@ -108,9 +135,8 @@ export default function DashboardLayoutSidebarCollapsed(props: DemoProps) {
             defaultSidebarCollapsed
             slots={{ appTitle: CustomAppTitle }}
         >
-          <DemoPageContent pathname={pathname} />
+          <DemoPageContent pathname={router.pathname} />
         </DashboardLayout>
       </AppProvider>
   );
 }
-
