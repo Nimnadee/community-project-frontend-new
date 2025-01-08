@@ -12,7 +12,7 @@ import {
   type Navigation,
 } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-
+// import { ReactComponent as CustomIcon } from './path/to/your/custom-icon.svg'; // Replace with your custom icon path
 const NAVIGATION: Navigation = [
   {
     segment: 'dashboard',
@@ -35,7 +35,7 @@ const demoTheme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'data-toolpad-color-scheme',
   },
-  colorSchemes: { light: true},
+  colorSchemes: { light: true, dark: true },
   breakpoints: {
     values: {
       xs: 0,
@@ -49,22 +49,43 @@ const demoTheme = createTheme({
 
 function DemoPageContent({ pathname }: { pathname: string }) {
   return (
-    <Box
-      sx={{
-        py: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
-      <Typography>Dashboard content for {pathname}</Typography>
-    </Box>
+      <Box
+          sx={{
+            py: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+      >
+        <Typography>Dashboard content for {pathname}</Typography>
+      </Box>
   );
 }
 
-export default function HomePage() {
+interface DemoProps {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * Remove this when copying and pasting into your project.
+   */
+  window?: () => Window;
+}
+
+function CustomAppTitle() {
+  return (
+      <Box className="css-yzjoij" display="flex" alignItems="center">
+        {/*<CustomIcon width="40" height="40" />*/}
+        <Typography variant="h6" className="css-14tatqh-MuiTypography-root" sx={{ fontWeight: 'bold' }}>
+          Frumos
+        </Typography>
+      </Box>
+  );
+}
+export default function DashboardLayoutSidebarCollapsed(props: DemoProps) {
+  const { window } = props;
+
   const [pathname, setPathname] = React.useState('/dashboard');
+
   const router = React.useMemo<Router>(() => {
     return {
       pathname,
@@ -73,15 +94,23 @@ export default function HomePage() {
     };
   }, [pathname]);
 
+  // Remove this const when copying and pasting into your project.
+  const demoWindow = window !== undefined ? window() : undefined;
+
   return (
-    <AppProvider
-      navigation={NAVIGATION}
-      router={router}
-      theme={demoTheme}
-    >
-      <DashboardLayout defaultSidebarCollapsed>
-        <DemoPageContent pathname={pathname} />
-      </DashboardLayout>
-    </AppProvider>
+      <AppProvider
+          navigation={NAVIGATION}
+          router={router}
+          theme={demoTheme}
+          window={demoWindow}
+      >
+        <DashboardLayout
+            defaultSidebarCollapsed
+            slots={{ appTitle: CustomAppTitle }}
+        >
+          <DemoPageContent pathname={pathname} />
+        </DashboardLayout>
+      </AppProvider>
   );
 }
+
